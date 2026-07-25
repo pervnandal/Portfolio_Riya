@@ -96,8 +96,8 @@ document.querySelectorAll('.btn').forEach(btn => {
 });
 
 // Contact form 
-const form = document.getElementById("contact-form");
-const statusMessage = document.getElementById("status");
+// const form = document.getElementById("contact-form");
+// const statusMessage = document.getElementById("status");
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("contact-form");

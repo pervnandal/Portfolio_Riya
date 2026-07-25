@@ -96,13 +96,35 @@ document.querySelectorAll('.btn').forEach(btn => {
 });
 
 // Contact form 
-const form = document.getElementById('contact-form');
-const status = document.getElementById('form-status');
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    status.textContent = "Thanks! Your message has been noted — Riya will get back to you soon.";
-    status.classList.add('ok');
-    form.reset();
+const form = document.getElementById("contact-form");
+const statusMessage = document.getElementById("status");
+
+form.addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevents the default page redirect
+
+    const data = new FormData(event.target);
+
+    try {
+        const response = await fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            statusMessage.innerHTML = "Thanks for your message! I'll get back to you soon.";
+            statusMessage.style.color = "green";
+            form.reset(); // Clears the form fields
+        } else {
+            statusMessage.innerHTML = "Oops! There was a problem submitting your form.";
+            statusMessage.style.color = "red";
+        }
+    } catch (error) {
+        statusMessage.innerHTML = "Oops! There was a problem submitting your form.";
+        statusMessage.style.color = "red";
+    }
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();

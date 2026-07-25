@@ -96,19 +96,20 @@ document.querySelectorAll('.btn').forEach(btn => {
 });
 
 // Contact form 
-// const form = document.getElementById("contact-form");
-// const statusMessage = document.getElementById("status");
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("contact-form");
-    const statusMessage = document.getElementById("form-status"); // Updated to match your HTML id
+    const statusMessage = document.getElementById("form-status");
 
     if (form) {
         form.addEventListener("submit", async function (event) {
             event.preventDefault(); // Prevents page reload
 
+            // Make the status container visible and display loading text
+            statusMessage.style.display = "block";
             statusMessage.innerHTML = "Sending...";
             statusMessage.style.color = "#555";
+            statusMessage.classList.remove("ok");
 
             const data = new FormData(event.target);
 
@@ -124,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok) {
                     statusMessage.innerHTML = "Thanks for your message! I'll get back to you soon.";
                     statusMessage.style.color = "green";
+                    statusMessage.classList.add("ok");
                     form.reset(); // Clears all inputs
                 } else {
                     statusMessage.innerHTML = "Oops! There was a problem submitting your form.";

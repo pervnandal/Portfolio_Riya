@@ -99,31 +99,41 @@ document.querySelectorAll('.btn').forEach(btn => {
 const form = document.getElementById("contact-form");
 const statusMessage = document.getElementById("status");
 
-form.addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevents the default page redirect
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contact-form");
+    const statusMessage = document.getElementById("form-status"); // Updated to match your HTML id
 
-    const data = new FormData(event.target);
+    if (form) {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevents page reload
 
-    try {
-        const response = await fetch(event.target.action, {
-            method: form.method,
-            body: data,
-            headers: {
-                'Accept': 'application/json'
+            statusMessage.innerHTML = "Sending...";
+            statusMessage.style.color = "#555";
+
+            const data = new FormData(event.target);
+
+            try {
+                const response = await fetch(event.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    statusMessage.innerHTML = "Thanks for your message! I'll get back to you soon.";
+                    statusMessage.style.color = "green";
+                    form.reset(); // Clears all inputs
+                } else {
+                    statusMessage.innerHTML = "Oops! There was a problem submitting your form.";
+                    statusMessage.style.color = "red";
+                }
+            } catch (error) {
+                statusMessage.innerHTML = "Network error. Please check your connection.";
+                statusMessage.style.color = "red";
             }
         });
-
-        if (response.ok) {
-            statusMessage.innerHTML = "Thanks for your message! I'll get back to you soon.";
-            statusMessage.style.color = "green";
-            form.reset(); // Clears the form fields
-        } else {
-            statusMessage.innerHTML = "Oops! There was a problem submitting your form.";
-            statusMessage.style.color = "red";
-        }
-    } catch (error) {
-        statusMessage.innerHTML = "Oops! There was a problem submitting your form.";
-        statusMessage.style.color = "red";
     }
 });
 
